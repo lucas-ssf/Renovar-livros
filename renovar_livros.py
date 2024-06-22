@@ -16,10 +16,8 @@ while not login:
         "sub_login": "sim"
     }
 
-    session = requests.Session()
 
-
-    response = session.post(url, data=payload)
+    response = requests.post(url, data=payload)
 
     # Imprimindo o status da resposta e o conteúdo
     print(f"Status Code: {response.status_code}")
