@@ -25,17 +25,18 @@ while not login:
         print("Algo deu errado, tente novamente!!\n")
     else:
         login = True
-with open('arquivo.html', 'w') as file:
-    file.write(response.text)
+#with open('arquivo.html', 'w') as file:
+#    file.write(response.text)
 
 
 # 2 Passo: Salvar os cookies
 cookies = response.cookies
-cookie = cookies.get_dict()['ASPSESSIONIDQSSDACRA']
-
+dic_cookies = cookies.get_dict()
+for nome in dic_cookies:
+    if 'ASP' in nome: cookie = nome
 
 headers = {
-    "Cookie": f"ASPSESSIONIDQSSDACRA={cookie}; TESTE=TESTECOOKIES; fileDownload=true"
+    "Cookie": f"{cookie}={dic_cookies[cookie]}; TESTE=TESTECOOKIES; fileDownload=true"
 }
 
 # 3 Passo: encontrar o código dos livros
@@ -59,6 +60,9 @@ while posicao != -1 and len(codigos) < 10:
     codigo_value = texto[posicao+inicio_value+7:posicao+inicio_value+fim_value]
     codigos.append(codigo_value)
     posicao += texto[posicao+inicio_value+fim_value:].find(fragmento)
+if len(codigos) < 1:
+    print("Não foi possível encontrar os códigos, por favor tente novamente mais tarde")
+    exit()
 print(f"O(s) código(s): {codigos}")
 
 # 4 Passo: renovar os livros
@@ -66,11 +70,10 @@ print("\n\nRequisitando renovação de livros...")
 
 url = 'https://biblioteca.ifsc.edu.br/index.asp?content=circulacoes&acao=renovacao&num_circulacao='
 for i,codigo in enumerate(codigos):
-    if i < (len(codigos) - 1):  
+    if i < (len(codigos) - 1):
         url = url+codigo+','
     else:
         url = url+codigo+'&iBanner=0&iIdioma=0&iFiltroBib=0'
-
 
 response = requests.get(url, headers=headers)
 
