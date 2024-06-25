@@ -19,12 +19,13 @@ while not login:
 
     response = requests.post(url, data=payload)
 
-    # Imprimindo o status da resposta e o conteúdo
+    # Imprimindo o status da resposta
     print(f"Status Code: {response.status_code}")
     if "rio ou senha inv" in response.text:
         print("Algo deu errado, tente novamente!!\n")
     else:
         login = True
+        
 #with open('arquivo.html', 'w') as file:
 #    file.write(response.text)
 
