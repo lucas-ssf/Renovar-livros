@@ -82,5 +82,10 @@ print(f"Status Code: {response.status_code}")
 
 if "mais de uma vez no mesmo dia" in response.text:
     print("1 ou mais itens já haviam sido renovados")
+elif "o renovado. Usu" in response.text:
+    print("1 ou mais itens não foram renovados pois o usuário está bloqueado")
 else:
     print("Livros renovados!")
+
+//with open('arquivo.html', 'w') as file:
+//    file.write(response.text)
